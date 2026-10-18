@@ -1,0 +1,30 @@
+# Java / Maven
+target/
+*.class
+*.log
+.mvn/wrapper/maven-wrapper.jar
+!mvnw
+!mvnw.cmd
+
+# Node
+node_modules/
+dist/
+coverage/
+npm-debug.log*
+
+# Secrets / local config
+.env
+.env.*
+!.env.example
+application-local.properties
+application-local.yml
+*.pem
+*.key
+
+# IDE / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
