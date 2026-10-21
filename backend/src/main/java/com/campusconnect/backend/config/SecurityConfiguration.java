@@ -7,29 +7,14 @@ import org.springframework.boot.security.autoconfigure.actuate.web.servlet.Endpo
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.logout.CompositeLogoutHandler;
-import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy;
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
-import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
-import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
-import org.springframework.util.StringUtils;
 
 @Configuration
 public class SecurityConfiguration {
@@ -37,43 +22,6 @@ public class SecurityConfiguration {
 	@Bean
 	AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 		return configuration.getAuthenticationManager();
-	}
-
-	@Bean
-	SessionAuthenticationStrategy sessionAuthenticationStrategy() {
-		return new ChangeSessionIdAuthenticationStrategy();
-	}
-
-	@Bean
-	SecurityContextRepository securityContextRepository() {
-		return new HttpSessionSecurityContextRepository();
-	}
-
-	@Bean
-	CookieCsrfTokenRepository csrfTokenRepository() {
-		CookieCsrfTokenRepository repository = CookieCsrfTokenRepository.withHttpOnlyFalse();
-		repository.setCookieName("XSRF-TOKEN");
-		repository.setHeaderName("X-XSRF-TOKEN");
-		repository.setCookiePath("/");
-		return repository;
-	}
-
-	@Bean
-	CsrfTokenRequestHandler csrfTokenRequestHandler() {
-		return new SpaCsrfTokenRequestHandler();
-	}
-
-	@Bean
-	LogoutHandler logoutHandler(CookieCsrfTokenRepository csrfTokenRepository) {
-		SecurityContextLogoutHandler securityContextLogoutHandler =
-				new SecurityContextLogoutHandler();
-		securityContextLogoutHandler.setInvalidateHttpSession(true);
-		securityContextLogoutHandler.setClearAuthentication(true);
-		return new CompositeLogoutHandler(
-				securityContextLogoutHandler,
-				new CookieClearingLogoutHandler("JSESSIONID"),
-				(request, response, authentication) ->
-						csrfTokenRepository.saveToken(null, request, response));
 	}
 
 	@Bean
@@ -87,60 +35,28 @@ public class SecurityConfiguration {
 	SecurityFilterChain securityFilterChain(
 			HttpSecurity http,
 			AuthenticationProvider authenticationProvider,
-			SessionAuthenticationStrategy sessionAuthenticationStrategy,
-			SecurityContextRepository securityContextRepository,
-			CookieCsrfTokenRepository csrfTokenRepository,
-			CsrfTokenRequestHandler csrfTokenRequestHandler,
-			CsrfAccessDeniedHandler csrfAccessDeniedHandler) throws Exception {
+			ApiAuthenticationEntryPoint authenticationEntryPoint,
+			ApiAccessDeniedHandler accessDeniedHandler,
+			JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
 		http
-				.csrf(csrf -> csrf
-						.csrfTokenRepository(csrfTokenRepository)
-						.csrfTokenRequestHandler(csrfTokenRequestHandler))
+				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session
-						.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-						.sessionAuthenticationStrategy(sessionAuthenticationStrategy))
-				.securityContext(securityContext -> securityContext
-						.securityContextRepository(securityContextRepository))
+						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.requestCache(requestCache -> requestCache.disable())
 				.httpBasic(basic -> basic.disable())
 				.formLogin(form -> form.disable())
+				.logout(logout -> logout.disable())
 				.authenticationProvider(authenticationProvider)
 				.exceptionHandling(exceptions -> exceptions
-						.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-						.accessDeniedHandler(csrfAccessDeniedHandler))
+						.authenticationEntryPoint(authenticationEntryPoint)
+						.accessDeniedHandler(accessDeniedHandler))
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
-						.requestMatchers(HttpMethod.GET, "/api/v1/auth/csrf").permitAll()
-						.requestMatchers(HttpMethod.POST, "/api/v1/auth/logout").authenticated()
-						.anyRequest().authenticated());
+						.anyRequest().authenticated())
+				.oauth2ResourceServer(resourceServer -> resourceServer
+						.authenticationEntryPoint(authenticationEntryPoint)
+						.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
 		return http.build();
-	}
-
-	private static final class SpaCsrfTokenRequestHandler implements CsrfTokenRequestHandler {
-
-		private final CsrfTokenRequestAttributeHandler plainHandler =
-				new CsrfTokenRequestAttributeHandler();
-		private final XorCsrfTokenRequestAttributeHandler xorHandler =
-				new XorCsrfTokenRequestAttributeHandler();
-
-		@Override
-		public void handle(
-				jakarta.servlet.http.HttpServletRequest request,
-				jakarta.servlet.http.HttpServletResponse response,
-				java.util.function.Supplier<CsrfToken> csrfToken) {
-			this.xorHandler.handle(request, response, csrfToken);
-			csrfToken.get();
-		}
-
-		@Override
-		public String resolveCsrfTokenValue(
-				jakarta.servlet.http.HttpServletRequest request,
-				CsrfToken csrfToken) {
-			CsrfTokenRequestAttributeHandler handler = StringUtils.hasText(
-					request.getHeader(csrfToken.getHeaderName()))
-							? this.plainHandler
-							: this.xorHandler;
-			return handler.resolveCsrfTokenValue(request, csrfToken);
-		}
 	}
 }

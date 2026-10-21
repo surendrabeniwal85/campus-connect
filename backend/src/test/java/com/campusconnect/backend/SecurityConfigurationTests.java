@@ -1,6 +1,5 @@
 package com.campusconnect.backend;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -14,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class SecurityConfigurationTests {
+class SecurityConfigurationTests extends JwtTestPropertySupport {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -32,14 +31,8 @@ class SecurityConfigurationTests {
 	}
 
 	@Test
-	void futureLoginPostIsPublicToAuthorizationButStillRequiresCsrf() throws Exception {
+	void loginIsPublicAndDoesNotRequireCsrf() throws Exception {
 		mockMvc.perform(post("/api/v1/auth/login")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content("{}"))
-				.andExpect(status().isForbidden());
-
-		mockMvc.perform(post("/api/v1/auth/login")
-						.with(csrf())
 						.contentType(MediaType.APPLICATION_JSON)
 						.content("{}"))
 				.andExpect(status().isBadRequest());
