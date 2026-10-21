@@ -1,0 +1,2 @@
+package com.placementassistant.backend.institute.classroom.dto;
+import jakarta.validation.constraints.*; import java.time.LocalDate; public record CreateCrtRequest(@NotBlank String title,@NotNull LocalDate sessionDate,@NotBlank String trainer,@NotBlank String targetBranch,@Min(1) @Max(8) int targetSemester,Long teacherProfileId) {}
