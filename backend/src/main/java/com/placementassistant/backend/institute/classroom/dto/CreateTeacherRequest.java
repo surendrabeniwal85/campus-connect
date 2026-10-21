@@ -1,2 +1,0 @@
-package com.placementassistant.backend.institute.classroom.dto;
-import jakarta.validation.constraints.*; public record CreateTeacherRequest(@NotNull Long accountId,@NotBlank String displayName,@NotBlank String department,@NotBlank String designation,boolean hod) {}

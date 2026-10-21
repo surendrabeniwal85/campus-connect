@@ -1,2 +1,0 @@
-package com.placementassistant.backend.institute.classroom.dto;
-import jakarta.validation.constraints.*; import com.placementassistant.backend.institute.classroom.attendance.AttendanceStatus; public record CorrectionRequest(@NotNull AttendanceStatus requestedStatus,@NotBlank @Size(max=500) String reason,@NotNull Long requestedByAccountId) {}

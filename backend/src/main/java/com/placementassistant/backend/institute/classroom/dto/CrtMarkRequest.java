@@ -1,2 +1,0 @@
-package com.placementassistant.backend.institute.classroom.dto;
-import jakarta.validation.constraints.*; import com.placementassistant.backend.institute.classroom.attendance.AttendanceStatus; public record CrtMarkRequest(@NotNull Long studentId,@NotNull AttendanceStatus status) {}

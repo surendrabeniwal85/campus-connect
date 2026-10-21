@@ -1,2 +1,0 @@
-package com.placementassistant.backend.institute.classroom.dto;
-import jakarta.validation.constraints.*; import java.util.Map; import com.placementassistant.backend.institute.classroom.attendance.AttendanceStatus; public record AttendanceMarkRequest(@NotNull Long teacherProfileId,@NotEmpty Map<@NotNull Long,@NotNull AttendanceStatus> marks) {}
