@@ -1,0 +1,3 @@
+﻿package com.campusconnect.backend.institute.classroom.timetable;
+import com.campusconnect.backend.institute.classroom.dto.CreateSlotRequest; import jakarta.validation.Valid; import org.springframework.web.bind.annotation.*; import org.springframework.http.HttpStatus; import java.util.*;
+@RestController @RequestMapping("/api/v1/timetable/slots") public class TimetableController {private final TimetableService service;public TimetableController(TimetableService s){service=s;} @GetMapping public List<TimetableSlot> list(){return service.list();} @PostMapping @ResponseStatus(HttpStatus.CREATED) public TimetableSlot create(@Valid @RequestBody CreateSlotRequest r){return service.create(r.teacherProfileId(),r.roomId(),r.section(),r.subject(),r.dayOfWeek(),r.periodNumber());}}

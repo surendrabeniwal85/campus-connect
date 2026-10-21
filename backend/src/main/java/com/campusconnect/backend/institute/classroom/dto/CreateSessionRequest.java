@@ -1,0 +1,2 @@
+﻿package com.campusconnect.backend.institute.classroom.dto;
+import jakarta.validation.constraints.*; import java.time.*; public record CreateSessionRequest(@NotNull Long timetableSlotId,@NotNull LocalDate sessionDate,LocalTime startsAt,LocalTime endsAt) {}
