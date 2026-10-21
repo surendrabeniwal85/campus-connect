@@ -1,4 +1,4 @@
-﻿package com.campusconnect.backend.institute.classroom.questionbank;
+package com.campusconnect.backend.institute.classroom.questionbank;
 
 
 import com.campusconnect.backend.institute.classroom.entity.AuditableEntity; import jakarta.persistence.*;

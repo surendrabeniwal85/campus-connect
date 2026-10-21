@@ -1,2 +1,2 @@
-﻿package com.campusconnect.backend.institute.classroom.dto;
+package com.campusconnect.backend.institute.classroom.dto;
 import jakarta.validation.constraints.*; import com.campusconnect.backend.institute.classroom.attendance.AttendanceStatus; public record CorrectionRequest(@NotNull AttendanceStatus requestedStatus,@NotBlank @Size(max=500) String reason,@NotNull Long requestedByAccountId) {}

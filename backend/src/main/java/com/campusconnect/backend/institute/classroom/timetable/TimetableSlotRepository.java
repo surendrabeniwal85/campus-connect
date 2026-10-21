@@ -1,4 +1,4 @@
-﻿package com.campusconnect.backend.institute.classroom.timetable;
+package com.campusconnect.backend.institute.classroom.timetable;
 
 
 import org.springframework.data.jpa.repository.JpaRepository; import java.util.*;

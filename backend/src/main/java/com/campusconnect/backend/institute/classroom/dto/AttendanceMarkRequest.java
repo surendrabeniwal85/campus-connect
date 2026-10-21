@@ -1,2 +1,2 @@
-﻿package com.campusconnect.backend.institute.classroom.dto;
+package com.campusconnect.backend.institute.classroom.dto;
 import jakarta.validation.constraints.*; import java.util.Map; import com.campusconnect.backend.institute.classroom.attendance.AttendanceStatus; public record AttendanceMarkRequest(@NotNull Long teacherProfileId,@NotEmpty Map<@NotNull Long,@NotNull AttendanceStatus> marks) {}

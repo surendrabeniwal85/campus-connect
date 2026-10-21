@@ -1,4 +1,4 @@
-﻿package com.campusconnect.backend.institute.classroom.teacher;
+package com.campusconnect.backend.institute.classroom.teacher;
 
 
 import com.campusconnect.backend.institute.classroom.entity.AuditableEntity;

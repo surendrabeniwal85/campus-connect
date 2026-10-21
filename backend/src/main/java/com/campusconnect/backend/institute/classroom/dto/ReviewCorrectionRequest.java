@@ -1,2 +1,2 @@
-﻿package com.campusconnect.backend.institute.classroom.dto;
+package com.campusconnect.backend.institute.classroom.dto;
 import jakarta.validation.constraints.*; public record ReviewCorrectionRequest(@NotNull Long approverAccountId,@NotNull Boolean approve) {}

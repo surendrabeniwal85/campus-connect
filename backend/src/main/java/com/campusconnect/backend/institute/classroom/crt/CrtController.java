@@ -1,4 +1,4 @@
-﻿package com.campusconnect.backend.institute.classroom.crt;
+package com.campusconnect.backend.institute.classroom.crt;
 import com.campusconnect.backend.institute.classroom.dto.*; import com.campusconnect.backend.institute.classroom.attendance.AttendanceStatus; import jakarta.validation.Valid; import org.springframework.web.bind.annotation.*; import org.springframework.http.HttpStatus; import java.util.*;
 @RestController @RequestMapping("/api/v1/crt") public class CrtController {private final CrtService service;public CrtController(CrtService s){service=s;}
  @GetMapping("/sessions") public List<CrtSession> list(){return service.list();}

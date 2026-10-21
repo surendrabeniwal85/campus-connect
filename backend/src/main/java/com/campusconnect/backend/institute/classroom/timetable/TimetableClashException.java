@@ -1,4 +1,4 @@
-﻿package com.campusconnect.backend.institute.classroom.timetable;
+package com.campusconnect.backend.institute.classroom.timetable;
 
 public class TimetableClashException extends RuntimeException {
     public TimetableClashException(String message) { super(message); }

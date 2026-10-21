@@ -1,4 +1,4 @@
-﻿package com.campusconnect.backend.institute.classroom;
+package com.campusconnect.backend.institute.classroom;
 import com.campusconnect.backend.institute.classroom.dto.ApiError; import org.springframework.http.*; import org.springframework.web.bind.annotation.*; import java.util.*;
 @RestControllerAdvice(basePackages="com.campusconnect.backend.institute.classroom") public class ClassroomExceptionHandler {
  @ExceptionHandler(IllegalArgumentException.class) public ResponseEntity<ApiError> badInput(IllegalArgumentException e){return ResponseEntity.badRequest().body(new ApiError(400,e.getMessage(),Map.of()));}

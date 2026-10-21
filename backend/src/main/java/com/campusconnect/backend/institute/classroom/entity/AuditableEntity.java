@@ -1,4 +1,4 @@
-﻿package com.campusconnect.backend.institute.classroom.entity;
+package com.campusconnect.backend.institute.classroom.entity;
 
 
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-﻿package com.campusconnect.backend.institute.classroom.timetable;
+package com.campusconnect.backend.institute.classroom.timetable;
 
 
 import com.campusconnect.backend.institute.classroom.entity.AuditableEntity; import jakarta.persistence.*;

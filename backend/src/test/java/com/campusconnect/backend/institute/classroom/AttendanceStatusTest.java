@@ -1,4 +1,4 @@
-﻿package com.campusconnect.backend.institute.classroom;
+package com.campusconnect.backend.institute.classroom;
 
 import com.campusconnect.backend.institute.classroom.attendance.AttendanceStatus;
 import org.junit.jupiter.api.Test;

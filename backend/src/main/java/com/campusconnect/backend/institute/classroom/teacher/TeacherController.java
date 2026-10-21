@@ -1,4 +1,4 @@
-﻿package com.campusconnect.backend.institute.classroom.teacher;
+package com.campusconnect.backend.institute.classroom.teacher;
 import com.campusconnect.backend.institute.classroom.dto.CreateTeacherRequest; import jakarta.validation.Valid; import org.springframework.web.bind.annotation.*; import org.springframework.http.HttpStatus; import java.util.*;
 @RestController @RequestMapping("/api/v1/teachers") public class TeacherController {private final TeacherProfileService service;public TeacherController(TeacherProfileService s){service=s;}
  @GetMapping public List<TeacherProfile> list(@RequestParam(required=false) String department){return service.list(department);}

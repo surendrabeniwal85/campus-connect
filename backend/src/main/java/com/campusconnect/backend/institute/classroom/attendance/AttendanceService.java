@@ -1,4 +1,4 @@
-﻿package com.campusconnect.backend.institute.classroom.attendance;
+package com.campusconnect.backend.institute.classroom.attendance;
 import com.campusconnect.backend.institute.classroom.timetable.TimetableSlot;
 import com.campusconnect.backend.institute.classroom.timetable.TimetableSlotRepository;
 
