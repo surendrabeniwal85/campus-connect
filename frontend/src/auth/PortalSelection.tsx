@@ -7,10 +7,12 @@ interface PortalSelectionProps {
   readonly onClaimAccount?: () => void;
 }
 
+type DemoRole = 'STUDENT' | 'TEACHER' | 'HOD' | 'TPO' | 'DIRECTOR';
+
 export default function PortalSelection({ onChoosePortal, onClaimAccount }: PortalSelectionProps) {
   const [backendStatus, setBackendStatus] = useState<'CHECKING' | 'ONLINE' | 'STANDBY'>('CHECKING');
   const [showDemoModal, setShowDemoModal] = useState(false);
-  const [selectedRoleInfo, setSelectedRoleInfo] = useState<'STUDENT' | 'TEACHER' | 'HOD' | 'TPO' | 'DIRECTOR'>('STUDENT');
+  const [selectedRoleInfo, setSelectedRoleInfo] = useState<DemoRole>('STUDENT');
 
   useEffect(() => {
     const apiBase = getApiBaseUrl();
@@ -23,7 +25,18 @@ export default function PortalSelection({ onChoosePortal, onClaimAccount }: Port
       .catch(() => setBackendStatus('STANDBY'));
   }, []);
 
-  const demoAccounts = [
+  interface DemoAccount {
+    role: DemoRole;
+    label: string;
+    portal: 'INSTITUTE' | 'PLACEMENT';
+    portalPath: '/institute/login' | '/placement/login';
+    email: string;
+    pass: string;
+    desc: string;
+    icon: string;
+  }
+
+  const demoAccounts: DemoAccount[] = [
     {
       role: 'STUDENT',
       label: 'Student',
@@ -301,7 +314,7 @@ export default function PortalSelection({ onChoosePortal, onClaimAccount }: Port
                     background: selectedRoleInfo === item.role ? 'var(--pa-color-indigo)' : 'var(--pa-color-surface)',
                     color: selectedRoleInfo === item.role ? '#fff' : 'var(--pa-color-text)',
                   }}
-                  onClick={() => setSelectedRoleInfo(item.role as any)}
+                  onClick={() => setSelectedRoleInfo(item.role)}
                 >
                   {item.icon} {item.label}
                 </button>

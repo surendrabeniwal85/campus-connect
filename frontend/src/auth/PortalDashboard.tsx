@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { AuthenticatedSession, StudentProfileDto, NewsItemDto, DriveDto, ResumeAnalysisResponse } from './authApi';
+import type { AuthenticatedSession, StudentProfileDto, NewsItemDto, DriveDto, ResumeAnalysisResponse, AccountDto } from './authApi';
 import {
   fetchStudentProfile,
   fetchNews,
@@ -9,6 +9,8 @@ import {
   createStaffAccount,
 } from './authApi';
 import { getPreferredTheme, toggleTheme, applyTheme, type Theme } from '../design-system/theme';
+import OfferPathStudentView from '../offer-path/OfferPathStudentView';
+import OfferPathTpoConsole from '../offer-path/OfferPathTpoConsole';
 
 interface PortalDashboardProps {
   readonly session: AuthenticatedSession;
@@ -25,10 +27,10 @@ export default function PortalDashboard({ session, portal, onSignOut }: PortalDa
 
   // Default active tab based on role
   const getDefaultTab = () => {
-    if (primaryRole.includes('STUDENT')) return 'news';
+    if (primaryRole.includes('STUDENT')) return 'offer-path';
     if (primaryRole.includes('TEACHER')) return 'attendance';
     if (primaryRole.includes('HOD')) return 'department';
-    if (primaryRole.includes('TPO') || primaryRole.includes('D_TPO')) return 'drives';
+    if (primaryRole.includes('TPO') || primaryRole.includes('D_TPO')) return 'one-rule-away';
     if (primaryRole.includes('COORDINATOR')) return 'live-rounds';
     if (primaryRole.includes('DIRECTOR_HR')) return 'master-console';
     return 'overview';
@@ -66,7 +68,7 @@ export default function PortalDashboard({ session, portal, onSignOut }: PortalDa
   const [attendanceSaved, setAttendanceSaved] = useState(false);
 
   // Staff accounts state (HOD & Director HR)
-  const [staffAccounts, setStaffAccounts] = useState<any[]>([]);
+  const [staffAccounts, setStaffAccounts] = useState<AccountDto[]>([]);
   const [showAddStaffModal, setShowAddStaffModal] = useState(false);
   const [newStaffName, setNewStaffName] = useState('');
   const [newStaffEmail, setNewStaffEmail] = useState('');
@@ -196,8 +198,8 @@ export default function PortalDashboard({ session, portal, onSignOut }: PortalDa
         setNewStaffEmail('');
         setStaffFeedback('');
       }, 1200);
-    } catch (err: any) {
-      setStaffFeedback(err.message || 'Failed to create staff account.');
+    } catch (err: unknown) {
+      setStaffFeedback(err instanceof Error ? err.message : 'Failed to create staff account.');
     } finally {
       setStaffSaving(false);
     }
@@ -239,6 +241,7 @@ export default function PortalDashboard({ session, portal, onSignOut }: PortalDa
 
       {/* Top Application Header */}
       <header className="portal-topbar">
+        {/* Upper-Left Identity: Icon -> Left-Aligned Title -> Theme Toggle immediately adjacent */}
         <div className="portal-brand-area">
           <div className="pa-brand" style={{ margin: 0 }}>
             <svg className="pa-brand-mark" viewBox="0 0 40 40" aria-hidden="true">
@@ -259,13 +262,23 @@ export default function PortalDashboard({ session, portal, onSignOut }: PortalDa
             </span>
           </div>
 
+          <button
+            type="button"
+            className="theme-toggle-btn"
+            onClick={handleThemeToggle}
+            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} mode`}
+            aria-label={`Toggle theme, current is ${theme}`}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
+        </div>
+
+        {/* Right Side: Portal Badge + User Identity Chip + Sign Out */}
+        <div className="portal-user-controls">
           <span className={`portal-badge ${portal.toLowerCase()}`}>
             {portal === 'INSTITUTE' ? '🏛️ Institute Portal' : '🎯 Placement Portal'}
           </span>
-        </div>
 
-        {/* User Info & Controls */}
-        <div className="portal-user-controls">
           <div className="user-chip">
             <div className="user-avatar">
               {session.email.substring(0, 2).toUpperCase()}
@@ -282,16 +295,6 @@ export default function PortalDashboard({ session, portal, onSignOut }: PortalDa
 
           <button
             type="button"
-            className="theme-toggle-btn"
-            onClick={handleThemeToggle}
-            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} mode`}
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
-
-          <button
-            type="button"
             className="signout-btn"
             onClick={onSignOut}
             title="Sign out of your session"
@@ -305,6 +308,13 @@ export default function PortalDashboard({ session, portal, onSignOut }: PortalDa
       <nav className="portal-nav-tabs" aria-label="Portal Navigation Tabs">
         {primaryRole.includes('STUDENT') && (
           <>
+            <button
+              type="button"
+              className={`portal-tab-btn ${activeTab === 'offer-path' ? 'active' : ''}`}
+              onClick={() => setActiveTab('offer-path')}
+            >
+              🎯 Offer Path & What-If
+            </button>
             <button
               type="button"
               className={`portal-tab-btn ${activeTab === 'news' ? 'active' : ''}`}
@@ -324,7 +334,7 @@ export default function PortalDashboard({ session, portal, onSignOut }: PortalDa
               className={`portal-tab-btn ${activeTab === 'drives' ? 'active' : ''}`}
               onClick={() => setActiveTab('drives')}
             >
-              🎯 Upcoming Drives & Eligibility
+              🏢 Upcoming Drives Roster
             </button>
             <button
               type="button"
@@ -406,6 +416,13 @@ export default function PortalDashboard({ session, portal, onSignOut }: PortalDa
           <>
             <button
               type="button"
+              className={`portal-tab-btn ${activeTab === 'one-rule-away' ? 'active' : ''}`}
+              onClick={() => setActiveTab('one-rule-away')}
+            >
+              ⚡ Offer Path: One-Rule-Away
+            </button>
+            <button
+              type="button"
               className={`portal-tab-btn ${activeTab === 'drives' ? 'active' : ''}`}
               onClick={() => setActiveTab('drives')}
             >
@@ -443,6 +460,13 @@ export default function PortalDashboard({ session, portal, onSignOut }: PortalDa
               onClick={() => setActiveTab('live-rounds')}
             >
               📢 Live Round Broadcast
+            </button>
+            <button
+              type="button"
+              className={`portal-tab-btn ${activeTab === 'one-rule-away' ? 'active' : ''}`}
+              onClick={() => setActiveTab('one-rule-away')}
+            >
+              ⚡ One-Rule-Away Candidate Support
             </button>
             <button
               type="button"
@@ -497,6 +521,24 @@ export default function PortalDashboard({ session, portal, onSignOut }: PortalDa
 
       {/* Main Container Content */}
       <main className="portal-container">
+
+        {/* ====================================================================
+            OFFER PATH & WHAT-IF SIMULATION (STUDENT PRIMARY DIFFERENTIATOR)
+            ==================================================================== */}
+        {activeTab === 'offer-path' && (
+          <OfferPathStudentView
+            token={session.accessToken}
+            studentProfile={studentProfile}
+            onOpenAtsScanner={() => setActiveTab('ats')}
+          />
+        )}
+
+        {/* ====================================================================
+            OFFER PATH: ONE-RULE-AWAY CONSOLE & TARGETED NUDGES (TPO / COORD)
+            ==================================================================== */}
+        {activeTab === 'one-rule-away' && (
+          <OfferPathTpoConsole token={session.accessToken} />
+        )}
 
         {/* ====================================================================
             STUDENT / GENERAL ACADEMIC PROFILE TAB

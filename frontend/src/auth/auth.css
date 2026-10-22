@@ -15,13 +15,15 @@
 }
 
 .portal-selection-content {
-  width: min(100%, 960px);
+  width: min(100%, 1400px);
 }
 
 .portal-selection-header {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: clamp(42px, 8vw, 82px);
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: clamp(24px, 4vw, 48px);
 }
 
 .portal-selection h1 {
@@ -569,10 +571,10 @@
 }
 
 .portal-container {
-  max-width: 1200px;
+  max-width: 1560px;
   width: 100%;
   margin: 0 auto;
-  padding: 24px;
+  padding: clamp(16px, 2.5vw, 32px);
   display: flex;
   flex-direction: column;
   gap: 24px;

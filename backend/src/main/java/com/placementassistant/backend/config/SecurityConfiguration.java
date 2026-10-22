@@ -87,6 +87,7 @@ public class SecurityConfiguration {
 						.requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/auth/forgot-password").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/auth/reset-password").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/v1/auth/logout").permitAll()
 						.requestMatchers("/api/v1/public/**").permitAll()
 						.anyRequest().authenticated())
 				.oauth2ResourceServer(resourceServer -> resourceServer

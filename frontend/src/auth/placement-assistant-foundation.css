@@ -13,12 +13,14 @@
   --pa-color-text: #20243a;
   --pa-color-muted: #525a70;
   --pa-color-border: #d9deea;
-  --pa-color-saffron: #8a3b00;
+  --pa-color-saffron: #d97706;
   --pa-color-indigo: #3730a3;
   --pa-color-teal: #0f766e;
   --pa-focus-ring: #1d4ed8;
   --pa-radius-card: 20px;
   --pa-shadow-card: 0 12px 32px rgb(32 36 58 / 8%);
+  font-size: 16px;
+  line-height: 1.5;
   transition: background-color 200ms ease, color 200ms ease;
 }
 

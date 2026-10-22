@@ -326,3 +326,111 @@ export async function createStaffAccount(token: string, input: {
     body: JSON.stringify(input),
   });
 }
+
+export interface RuleResultDto {
+  readonly rule: string;
+  readonly expected: string;
+  readonly actual: string;
+  readonly status: 'PASS' | 'FAIL' | 'MISSING';
+  readonly nextAction: string;
+}
+
+export interface EligibilityResultDto {
+  readonly driveId: number;
+  readonly eligible: boolean;
+  readonly hasMissingData: boolean;
+  readonly rules: readonly RuleResultDto[];
+}
+
+export interface RuleTransitionDto {
+  readonly rule: string;
+  readonly fromStatus: string;
+  readonly toStatus: string;
+  readonly reason: string;
+}
+
+export interface NewlyUnlockedDriveDto {
+  readonly driveId: number;
+  readonly companyName: string;
+  readonly roleTitle: string;
+  readonly changedRules: readonly RuleTransitionDto[];
+}
+
+export interface SimulationResponseDto {
+  readonly actualResults: readonly EligibilityResultDto[];
+  readonly simulatedResults: readonly EligibilityResultDto[];
+  readonly newlyUnlockedDrives: readonly NewlyUnlockedDriveDto[];
+}
+
+export interface OneRuleAwayCandidateDto {
+  readonly studentId: number;
+  readonly fullName: string;
+  readonly rollNumber: string;
+  readonly email: string;
+  readonly unmetRule: string;
+  readonly actualValue: string;
+  readonly requiredValue: string;
+  readonly nextAction: string;
+}
+
+export interface OneRuleAwayResponseDto {
+  readonly driveId: number;
+  readonly companyName: string;
+  readonly roleTitle: string;
+  readonly totalAssessed: number;
+  readonly eligibleCount: number;
+  readonly oneRuleAwayCount: number;
+  readonly missingDataCount: number;
+  readonly unmetRuleBreakdown: Record<string, number>;
+  readonly candidates: readonly OneRuleAwayCandidateDto[];
+}
+
+export interface NudgeResponseDto {
+  readonly driveId: number;
+  readonly driveTitle: string;
+  readonly targetedCount: number;
+  readonly sentCount: number;
+  readonly status: string;
+  readonly message: string;
+}
+
+export async function fetchDriveEligibility(driveId: number, token: string): Promise<EligibilityResultDto> {
+  return request<EligibilityResultDto>(`/api/v1/drives/${driveId}/eligibility`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+export async function simulateOfferPath(
+  overrides: {
+    driveIds?: number[];
+    simulatedAttendance?: number;
+    simulatedCgpa?: number;
+    simulatedAtsScore?: number;
+    simulatedBacklogs?: number;
+  },
+  token: string
+): Promise<SimulationResponseDto> {
+  return request<SimulationResponseDto>('/api/v1/drives/simulate', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(overrides),
+  });
+}
+
+export async function fetchOneRuleAwaySummary(driveId: number, token: string): Promise<OneRuleAwayResponseDto> {
+  return request<OneRuleAwayResponseDto>(`/api/v1/drives/${driveId}/one-rule-away`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+export async function sendTargetedNudge(
+  driveId: number,
+  token: string,
+  customMessage?: string
+): Promise<NudgeResponseDto> {
+  return request<NudgeResponseDto>(`/api/v1/drives/${driveId}/nudge`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ customMessage }),
+  });
+}

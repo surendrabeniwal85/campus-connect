@@ -221,6 +221,7 @@ public class AuthController {
 	}
 
 	@GetMapping("/me")
+	@Transactional(readOnly = true)
 	public ResponseEntity<?> getCurrentUser(Authentication authentication, HttpServletRequest request) {
 		if (authentication == null || !authentication.isAuthenticated()) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiErrorResponse(
@@ -251,5 +252,10 @@ public class AuthController {
 				user.isEnabled(),
 				user.getCreatedAt() != null ? user.getCreatedAt().toString() : Instant.now().toString()
 		));
+	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<?> logout() {
+		return ResponseEntity.ok(Map.of("message", "Logged out successfully."));
 	}
 }
