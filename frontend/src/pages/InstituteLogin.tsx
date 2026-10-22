@@ -5,6 +5,7 @@ interface InstituteLoginProps {
   readonly onAuthenticated: (session: AuthenticatedSession) => void;
   readonly onChangePortal: () => void;
   readonly onResetPassword: () => void;
+  readonly onRegister?: () => void;
 }
 
 export default function InstituteLogin(props: InstituteLoginProps) {

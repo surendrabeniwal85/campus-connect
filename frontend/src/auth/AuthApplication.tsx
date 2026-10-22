@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { resolveRegisteredView, type RegisteredView } from '../app/routes';
 import InstituteLogin from '../pages/InstituteLogin';
 import PlacementLogin from '../pages/PlacementLogin';
+import RegisterStudent from '../pages/RegisterStudent';
 import ResetPassword from '../pages/ResetPassword';
 import PortalSelection from './PortalSelection';
+import PortalDashboard from './PortalDashboard';
 import type { AuthenticatedSession, Portal } from './authApi';
 import './auth.css';
 
@@ -19,6 +21,7 @@ export default function AuthApplication() {
   function navigate(path: string) {
     window.history.pushState({}, '', path);
     setPathname(path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   useEffect(() => {
@@ -31,6 +34,7 @@ export default function AuthApplication() {
     if (!session) return undefined;
     const timeout = window.setTimeout(() => {
       setSession(null);
+      setPortal(null);
       navigate('/');
     }, session.expiresIn * 1000);
     return () => window.clearTimeout(timeout);
@@ -38,36 +42,29 @@ export default function AuthApplication() {
 
   const view: RegisteredView | null = resolveRegisteredView(pathname);
 
-  if (session && view === 'AUTH_SESSION') {
-    return (
-      <main className="auth-page pa-foundation">
-        <section className="auth-card pa-card auth-session" aria-labelledby="session-title">
-          <p className="auth-eyebrow">PLACEMENT ASSISTANT</p>
-          <p className="auth-tagline">Powered by AI</p>
-          <h1 id="session-title">You’re signed in</h1>
-          <p className="auth-description">{session.email}</p>
-          <div className="auth-session-details">
-            <p><strong>Portal</strong><span>{portal === 'INSTITUTE' ? 'Institute' : 'Placement'}</span></p>
-            <p><strong>Roles</strong><span>{session.roles.join(', ')}</span></p>
-            <p><strong>Session</strong><span>Access token expires in {Math.floor(session.expiresIn / 60)} minutes</span></p>
-          </div>
-          <p className="auth-note">Authentication succeeded. Protected portal features are not connected yet.</p>
-          <button className="auth-submit" type="button" onClick={() => {
+  // Authenticated State -> Render Full Interactive Portal Dashboard
+  if (session) {
+    if (view === 'AUTH_SESSION' || view === 'PORTAL_DASHBOARD' || pathname.startsWith('/dashboard') || pathname.startsWith('/portal')) {
+      return (
+        <PortalDashboard
+          session={session}
+          portal={portal ?? 'INSTITUTE'}
+          onSignOut={() => {
             setSession(null);
             setPortal(null);
             navigate('/');
-          }}>
-            Sign out and return to portal selection
-          </button>
-        </section>
-      </main>
-    );
+          }}
+        />
+      );
+    }
   }
 
+  // Unauthenticated Route Handlers
   if (!session && view === 'PORTAL_SELECTION') {
     return (
       <PortalSelection
         onChoosePortal={navigate}
+        onClaimAccount={() => navigate('/institute/register')}
       />
     );
   }
@@ -82,9 +79,11 @@ export default function AuthApplication() {
         }}
         onChangePortal={() => navigate('/')}
         onResetPassword={() => navigate('/institute/reset-password')}
+        onRegister={() => navigate('/institute/register')}
       />
     );
   }
+
   if (!session && view === 'PLACEMENT_LOGIN') {
     return (
       <PlacementLogin
@@ -99,14 +98,39 @@ export default function AuthApplication() {
     );
   }
 
+  if (!session && view === 'INSTITUTE_REGISTER') {
+    return (
+      <RegisterStudent
+        onBackToLogin={() => navigate('/institute/login')}
+        onRegistered={() => navigate('/institute/login')}
+      />
+    );
+  }
+
   if (!session && view === 'INSTITUTE_RESET_PASSWORD') {
     return (
       <ResetPassword portal="INSTITUTE" onBackToLogin={() => navigate('/institute/login')} />
     );
   }
+
   if (!session && view === 'PLACEMENT_RESET_PASSWORD') {
     return (
       <ResetPassword portal="PLACEMENT" onBackToLogin={() => navigate('/placement/login')} />
+    );
+  }
+
+  // Active Session Default fallback or 404 / Unauthorized Handlers
+  if (session) {
+    return (
+      <PortalDashboard
+        session={session}
+        portal={portal ?? 'INSTITUTE'}
+        onSignOut={() => {
+          setSession(null);
+          setPortal(null);
+          navigate('/');
+        }}
+      />
     );
   }
 
@@ -115,18 +139,12 @@ export default function AuthApplication() {
       <section className="auth-card pa-card pa-foundation" aria-labelledby="portal-title">
         <p className="auth-eyebrow">PLACEMENT ASSISTANT</p>
         <p className="auth-tagline">Powered by AI</p>
-        <h1 id="portal-title">{session ? 'Session is active' : 'Page not found'}</h1>
+        <h1 id="portal-title">Page not found</h1>
         <p className="auth-description">
-          {session
-            ? 'Sign out to return to portal selection before starting another sign in.'
-            : 'This page is not registered in the application module registry.'}
+          The requested page route (<code>{pathname}</code>) is not registered in the application registry.
         </p>
-        <button className="auth-submit" type="button" onClick={() => {
-          setSession(null);
-          setPortal(null);
-          navigate('/');
-        }}>
-          {session ? 'Sign out and return to portal selection' : 'Go to portal selection'}
+        <button className="auth-submit" type="button" onClick={() => navigate('/')}>
+          Return to Portal Selection
         </button>
       </section>
     </main>

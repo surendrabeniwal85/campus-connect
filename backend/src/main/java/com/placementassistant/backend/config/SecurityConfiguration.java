@@ -11,13 +11,20 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
 	@Bean
@@ -37,6 +44,23 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOriginPatterns(List.of(
+				"http://localhost:[*]",
+				"http://127.0.0.1:[*]",
+				"https://placement-assistant-frontend.onrender.com",
+				"https://*.onrender.com"
+		));
+		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+		configuration.setAllowedHeaders(List.of("*"));
+		configuration.setAllowCredentials(true);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
+
+	@Bean
 	SecurityFilterChain securityFilterChain(
 			HttpSecurity http,
 			AuthenticationProvider authenticationProvider,
@@ -44,6 +68,7 @@ public class SecurityConfiguration {
 			ApiAccessDeniedHandler accessDeniedHandler,
 			JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
 		http
+				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -57,7 +82,12 @@ public class SecurityConfiguration {
 						.accessDeniedHandler(accessDeniedHandler))
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
+						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/v1/auth/forgot-password").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/v1/auth/reset-password").permitAll()
+						.requestMatchers("/api/v1/public/**").permitAll()
 						.anyRequest().authenticated())
 				.oauth2ResourceServer(resourceServer -> resourceServer
 						.authenticationEntryPoint(authenticationEntryPoint)

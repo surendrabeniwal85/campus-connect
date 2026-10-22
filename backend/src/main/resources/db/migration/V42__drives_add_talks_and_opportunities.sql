@@ -1,0 +1,38 @@
+CREATE TABLE IF NOT EXISTS placement_talk (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(200) NOT NULL,
+  speaker_name VARCHAR(150),
+  company_id BIGINT NULL,
+  talk_at TIMESTAMP NOT NULL,
+  venue_or_link VARCHAR(300),
+  description TEXT,
+  audience VARCHAR(150) NOT NULL DEFAULT 'ALL',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  created_by BIGINT NULL,
+  deleted BOOLEAN NOT NULL DEFAULT FALSE,
+  FOREIGN KEY (company_id) REFERENCES company(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_talk_at ON placement_talk (talk_at);
+
+CREATE TABLE IF NOT EXISTS opportunity (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  type ENUM('INTERNSHIP','HACKATHON','OFF_CAMPUS') NOT NULL,
+  title VARCHAR(200) NOT NULL,
+  organisation VARCHAR(150) NOT NULL,
+  description TEXT,
+  link VARCHAR(500),
+  location VARCHAR(150),
+  stipend_or_package VARCHAR(100),
+  start_date DATE NULL,
+  end_date DATE NULL,
+  deadline TIMESTAMP NULL,
+  final_year_only BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  created_by BIGINT NULL,
+  deleted BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE INDEX IF NOT EXISTS idx_opportunity_type_deadline ON opportunity (type, deadline);

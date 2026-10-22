@@ -14,8 +14,10 @@ export interface ModuleRoute {
     | 'PORTAL_SELECTION'
     | 'INSTITUTE_LOGIN'
     | 'PLACEMENT_LOGIN'
+    | 'INSTITUTE_REGISTER'
     | 'INSTITUTE_RESET_PASSWORD'
     | 'PLACEMENT_RESET_PASSWORD'
+    | 'PORTAL_DASHBOARD'
     | 'AUTH_SESSION';
 }
 
@@ -112,5 +114,26 @@ export const moduleRegistry = [
       title: 'Placement Password Reset',
       view: 'PLACEMENT_RESET_PASSWORD',
     }],
+  },
+  {
+    id: 'institute-register',
+    portal: 'INSTITUTE',
+    owner: 'Surendra Beniwal',
+    folder: 'pages/RegisterStudent.tsx',
+    routes: [{
+      path: '/institute/register',
+      title: 'Student Account Claim',
+      view: 'INSTITUTE_REGISTER',
+    }],
+  },
+  {
+    id: 'portal-dashboard',
+    portal: 'SHARED',
+    owner: 'Surendra Beniwal',
+    folder: 'auth/PortalDashboard.tsx',
+    routes: [
+      { path: '/dashboard', title: 'Portal Dashboard', view: 'PORTAL_DASHBOARD' },
+      { path: '/portal/dashboard', title: 'Portal Dashboard', view: 'PORTAL_DASHBOARD' },
+    ],
   },
 ] as const satisfies readonly ModuleRegistration[];

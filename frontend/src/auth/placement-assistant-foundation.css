@@ -19,6 +19,22 @@
   --pa-focus-ring: #1d4ed8;
   --pa-radius-card: 20px;
   --pa-shadow-card: 0 12px 32px rgb(32 36 58 / 8%);
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+:root[data-theme="dark"],
+[data-theme="dark"] .pa-foundation,
+body[data-theme="dark"] .pa-foundation {
+  --pa-color-surface: #141926;
+  --pa-color-page: #0b0f19;
+  --pa-color-text: #f3f6fc;
+  --pa-color-muted: #9ba5bc;
+  --pa-color-border: #232d42;
+  --pa-color-saffron: #f59e0b;
+  --pa-color-indigo: #818cf8;
+  --pa-color-teal: #2dd4bf;
+  --pa-focus-ring: #60a5fa;
+  --pa-shadow-card: 0 14px 36px rgb(0 0 0 / 45%);
 }
 
 .pa-foundation {
