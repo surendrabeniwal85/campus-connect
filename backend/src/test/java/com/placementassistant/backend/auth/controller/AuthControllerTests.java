@@ -350,6 +350,7 @@ class AuthControllerTests extends JwtTestPropertySupport {
 		String getProtected(org.springframework.security.core.Authentication authentication) {
 			return authentication.getAuthorities().stream()
 					.map(authority -> authority.getAuthority())
+					.filter(authority -> authority.startsWith("ROLE_"))
 					.findFirst()
 					.orElse("");
 		}
