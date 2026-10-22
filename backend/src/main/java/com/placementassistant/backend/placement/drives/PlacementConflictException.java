@@ -1,4 +1,4 @@
-package com.campusconnect.backend.placement.drives;
+package com.placementassistant.backend.placement.drives;
 
 public class PlacementConflictException extends RuntimeException {
         public PlacementConflictException(String message) {

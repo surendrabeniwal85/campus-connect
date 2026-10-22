@@ -1,4 +1,4 @@
-package com.campusconnect.backend.placement.drives.company;
+package com.placementassistant.backend.placement.drives.company;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

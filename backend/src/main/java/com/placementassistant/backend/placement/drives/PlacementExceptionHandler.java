@@ -1,6 +1,6 @@
-package com.campusconnect.backend.placement.drives;
+package com.placementassistant.backend.placement.drives;
 
-import com.campusconnect.backend.common.ApiErrorResponse;
+import com.placementassistant.backend.common.ApiErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import org.springframework.http.HttpStatus;
@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(basePackages = "com.campusconnect.backend.placement")
+@RestControllerAdvice(basePackages = "com.placementassistant.backend.placement")
 public class PlacementExceptionHandler {
 
         @ExceptionHandler(PlacementNotFoundException.class)

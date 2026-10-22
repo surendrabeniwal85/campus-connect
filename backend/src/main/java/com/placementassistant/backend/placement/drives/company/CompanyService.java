@@ -1,7 +1,7 @@
-package com.campusconnect.backend.placement.drives.company;
+package com.placementassistant.backend.placement.drives.company;
 
-import com.campusconnect.backend.placement.drives.PlacementConflictException;
-import com.campusconnect.backend.placement.drives.PlacementNotFoundException;
+import com.placementassistant.backend.placement.drives.PlacementConflictException;
+import com.placementassistant.backend.placement.drives.PlacementNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

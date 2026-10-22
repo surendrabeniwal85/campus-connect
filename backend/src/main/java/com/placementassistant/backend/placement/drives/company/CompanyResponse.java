@@ -1,4 +1,4 @@
-package com.campusconnect.backend.placement.drives.company;
+package com.placementassistant.backend.placement.drives.company;
 
 public record CompanyResponse(Long id, String name, String industry, String website) {
 
