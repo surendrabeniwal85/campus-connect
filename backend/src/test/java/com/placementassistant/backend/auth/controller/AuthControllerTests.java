@@ -78,7 +78,8 @@ class AuthControllerTests extends JwtTestPropertySupport {
 	@BeforeEach
 	void setUpUser() {
 		removeTestUser();
-		Role role = roleRepository.saveAndFlush(new Role(ROLE_NAME));
+		Role role = roleRepository.findByName(ROLE_NAME)
+				.orElseGet(() -> roleRepository.saveAndFlush(new Role(ROLE_NAME)));
 		storedHash = passwordHashingService.hashPassword(RAW_PASSWORD);
 		User user = new User("Login Test", EMAIL, storedHash);
 		user.addRole(role);
@@ -91,7 +92,6 @@ class AuthControllerTests extends JwtTestPropertySupport {
 				"delete from user_role where user_id in (select id from app_user where email = ?)",
 				EMAIL);
 		userRepository.findByEmailIgnoreCase(EMAIL).ifPresent(userRepository::delete);
-		roleRepository.findByName(ROLE_NAME).ifPresent(roleRepository::delete);
 	}
 
 	@Test
