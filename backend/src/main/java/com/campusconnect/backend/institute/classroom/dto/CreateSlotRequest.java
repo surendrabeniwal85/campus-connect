@@ -1,0 +1,2 @@
+package com.campusconnect.backend.institute.classroom.dto;
+import jakarta.validation.constraints.*; public record CreateSlotRequest(@NotNull Long teacherProfileId,@NotNull Long roomId,@NotBlank String section,@NotBlank String subject,@Min(1) @Max(7) int dayOfWeek,@Min(1) @Max(20) int periodNumber) {}
