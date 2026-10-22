@@ -1,0 +1,2 @@
+package com.campusconnect.backend.institute.classroom.dto;
+import jakarta.validation.constraints.*; import com.campusconnect.backend.institute.classroom.attendance.AttendanceStatus; public record CrtMarkRequest(@NotNull Long studentId,@NotNull AttendanceStatus status) {}

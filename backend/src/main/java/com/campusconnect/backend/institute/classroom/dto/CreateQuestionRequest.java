@@ -1,0 +1,2 @@
+package com.campusconnect.backend.institute.classroom.dto;
+import jakarta.validation.constraints.*; import com.campusconnect.backend.institute.classroom.questionbank.*; public record CreateQuestionRequest(@NotBlank String companyName,@NotNull QuestionRoundType roundType,@NotBlank String topic,@NotNull QuestionDifficulty difficulty,@NotBlank String questionText,String answerHint,@NotNull Long createdByAccountId) {}
