@@ -1,8 +1,5 @@
 import { useState } from 'react';
 
-import ClassroomRoutes from './features/institute/classroom/routes';
-import './features/institute/classroom/classroom.css';
-
 type Page = 'Overview' | 'Academics' | 'Attendance' | 'Placements' | 'Announcements';
 
 const navigation: { label: Page; icon: string }[] = [
@@ -59,7 +56,13 @@ function Academics() {
   </>;
 }
 
-
+function Attendance() {
+  const subjects = [{ name: 'Data Mining', attended: 23, total: 25 }, { name: 'Cloud Computing', attended: 21, total: 24 }, { name: 'Software Engineering', attended: 22, total: 24 }, { name: 'Machine Learning', attended: 24, total: 25 }];
+  return <><PageHeader eyebrow="STUDENT SERVICES" title="Attendance" description="Review attendance summaries and recent class activity." />
+    <section className="summary-grid three"><article className="summary-card"><div><p>Overall attendance</p><strong>92%</strong><small>Across listed subjects</small></div></article><article className="summary-card"><div><p>Classes attended</p><strong>90</strong><small>Illustrative total</small></div></article><article className="summary-card"><div><p>Classes missed</p><strong>8</strong><small>Illustrative total</small></div></article></section>
+    <section className="data-panel"><div className="panel-heading"><div><p className="eyebrow">SUBJECT BREAKDOWN</p><h3>Attendance by subject</h3></div><span className="tag">Sample data</span></div>{subjects.map((subject) => { const percent = Math.round(subject.attended / subject.total * 100); return <div className="attendance-row" key={subject.name}><div className="attendance-label"><strong>{subject.name}</strong><span>{subject.attended}/{subject.total} classes · {percent}%</span></div><div className="progress-track"><div className="progress-value" style={{ width: `${percent}%` }} /></div></div>; })}<p className="fine-print">Attendance figures are sample values for the interface and are not official records.</p></section>
+  </>;
+}
 
 function Placements() {
   const drives = [{ company: 'Northstar Systems', role: 'Graduate Engineer Trainee', eligibility: 'Eligible to review', date: '28 Oct 2026', status: 'Open' }, { company: 'BluePeak Technologies', role: 'Software Developer', eligibility: 'Check criteria', date: '02 Nov 2026', status: 'Open' }, { company: 'Vertex Digital', role: 'Associate Engineer', eligibility: 'Eligible to review', date: '06 Nov 2026', status: 'Upcoming' }];
@@ -95,7 +98,7 @@ export default function App() {
     <section className="content" key={activePage}>
       {activePage === 'Overview' && <Overview navigate={navigate} />}
       {activePage === 'Academics' && <Academics />}
-      {activePage === 'Attendance' && <ClassroomRoutes />}
+      {activePage === 'Attendance' && <Attendance />}
       {activePage === 'Placements' && <Placements />}
       {activePage === 'Announcements' && <Announcements />}
     </section>
