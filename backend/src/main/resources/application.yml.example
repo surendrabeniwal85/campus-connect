@@ -2,7 +2,7 @@ spring:
   application:
     name: campus-connect-api
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/campus_connect}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/placement_assistant}
     username: ${DB_USERNAME:campus_app}
     password: ${DB_PASSWORD:change_me_locally}
   jpa:

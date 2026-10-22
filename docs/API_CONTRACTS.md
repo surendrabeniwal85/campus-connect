@@ -1,4 +1,4 @@
-# Campus Connect API Contracts — Proposed Draft
+# Placement Assistant API Contracts — Proposed Draft
 
 > **Status:** Draft for team approval. This document consolidates proposals from `docs/API.md`, `docs/ARCHITECTURE.md`, `docs/DATA_MODEL.md`, `docs/SECURITY_AND_PRIVACY.md`, and `database/schema.sql`. It does not describe implemented API behavior.
 
@@ -18,7 +18,9 @@
 - Keep response field names stable and coordinate changes before merging.
 - Return DTOs from REST endpoints; do not return JPA entities directly.
 - Use meaningful HTTP status codes.
-- Validation errors should identify invalid fields without exposing secrets.
+- Validation errors currently use the generic five-field envelope described
+  below and do not include field-level details. Responses must not expose
+  secrets. Any field-level extension remains subject to team approval.
 
 The existing documentation does not define a general success-response envelope or endpoint-specific response schemas. Those contracts should be agreed before implementing individual endpoints.
 
@@ -48,11 +50,17 @@ The fields are:
 
 The docs provide this example but do not specify timestamp formatting, the complete set of error codes, or exact messages. Those details remain to be agreed. Validation responses must not expose secrets.
 
+**Current implementation:** `GlobalExceptionHandler` returns this five-field
+shape for validation failures with status `400`, code `VALIDATION_ERROR`, and
+message `One or more fields are invalid.` It does not include invalid field
+names. Malformed request bodies use the same envelope with code
+`MALFORMED_JSON` and a generic message.
+
 ## 4. HTTP status conventions
 
 | Status | Documented behavior or proposal |
 |---|---|
-| `400 Bad Request` | **Documented example:** used for `VALIDATION_ERROR`. Invalid-field identification is required, but its response structure is not specified. |
+| `400 Bad Request` | **Current behavior:** used for `VALIDATION_ERROR`; the response does not identify invalid fields. Any field-level extension remains pending approval (see Section 5). |
 | `401 Unauthorized` | **Documented requirement:** use when the request is unauthenticated. |
 | `403 Forbidden` | **Documented requirement:** use when the user is authenticated but forbidden from the requested action. |
 | `404 Not Found` | **Proposal for review:** the existing docs do not specify when or how this status is used. |
@@ -62,9 +70,14 @@ The API proposal asks for meaningful HTTP status codes but does not define a com
 
 ## 5. Field-level validation details
 
-**Documented requirement:** Validation errors should identify invalid fields without exposing secrets.
+**Current behavior:** Validation errors use the generic five-field envelope
+described in Section 3 and do not identify invalid fields. This preserves the
+current backend response contract.
 
-**Proposal for team review:** Extend the five-field error envelope with an optional `errors` array for field-level details. The existing documentation does not define this extension’s name, structure, or required fields.
+**Proposal pending team approval:** If field-level validation details are
+required, extend the five-field error envelope with an optional `errors` array.
+The existing documentation does not define this extension’s name, structure,
+or required fields. Do not implement the extension until approved.
 
 For discussion only:
 
@@ -88,14 +101,19 @@ This is a proposed extension requiring approval. It does not replace or alter th
 
 ## 6. Roles
 
-**Documented proposal:** The data model and SQL schema identify these four role names:
+**Legacy schema values:** The starter SQL schema seeds these role names:
 
 - `ROLE_ADMIN`
 - `ROLE_FACULTY`
 - `ROLE_STUDENT`
 - `ROLE_TPO`
 
-The SQL schema seeds these role names in `app_role`. Their presence in the schema does not define all role permissions.
+The SQL schema seeds these names in `app_role`; they do not define the current canonical portal roles or all role permissions. The application currently defines the seven canonical roles and portal associations as follows:
+
+- Institute: `STUDENT`, `TEACHER`, `HOD`
+- Placement: `DIRECTOR_HR`, `TPO`, `D_TPO`, `PLACEMENT_COORDINATOR`
+
+No automatic mapping from legacy `ROLE_ADMIN` or `ROLE_FACULTY` to a canonical role is defined.
 
 ## 7. Proposed endpoint access rules
 
@@ -106,26 +124,31 @@ The following paths and access descriptions are listed in `docs/API.md` as initi
 | `GET` | `/health` | `/api/v1/health` | Health check; `docs/API.md` also mentions `/actuator/health` if configured | Public/internal |
 | `GET` | `/actuator/health` | `/api/v1/actuator/health` | Alternative health-check path mentioned in `docs/API.md`, if configured | Public/internal |
 | `POST` | `/auth/login` | `/api/v1/auth/login` | Database-backed JWT bearer login | Public |
-| `GET` | `/students/me/summary` | `/api/v1/students/me/summary` | Current student's academic summary | Student |
-| `GET` | `/students/{studentId}/summary` | `/api/v1/students/{studentId}/summary` | View a student's summary | Faculty/Admin with permission |
-| `GET` | `/attendance/sessions` | `/api/v1/attendance/sessions` | List sessions | Faculty/Student |
-| `POST` | `/attendance/sessions/{sessionId}/records` | `/api/v1/attendance/sessions/{sessionId}/records` | Mark attendance | Faculty |
-| `GET` | `/attendance/me/summary` | `/api/v1/attendance/me/summary` | Current student's attendance summary | Student |
-| `GET` | `/placements/drives` | `/api/v1/placements/drives` | List drives | Student/TPO |
-| `GET` | `/placements/drives/{driveId}/eligibility` | `/api/v1/placements/drives/{driveId}/eligibility` | Eligibility and reasons | Student/TPO |
-| `POST` | `/placements/drives/{driveId}/applications` | `/api/v1/placements/drives/{driveId}/applications` | Apply to a drive | Student |
-| `GET` | `/announcements` | `/api/v1/announcements` | List announcements | Authenticated users |
-| `POST` | `/announcements` | `/api/v1/announcements` | Create announcement | Faculty/TPO/Admin |
+| `GET` | `/students/me/summary` | `/api/v1/students/me/summary` | Current student's academic summary | `STUDENT` (candidate; pending approval) |
+| `GET` | `/students/{studentId}/summary` | `/api/v1/students/{studentId}/summary` | View a student's summary | Pending approval; exact roles and scope are unresolved |
+| `GET` | `/attendance/sessions` | `/api/v1/attendance/sessions` | List sessions | Pending approval; Institute role access is unresolved |
+| `POST` | `/attendance/sessions/{sessionId}/records` | `/api/v1/attendance/sessions/{sessionId}/records` | Mark attendance | Pending approval; Institute role access is unresolved |
+| `GET` | `/attendance/me/summary` | `/api/v1/attendance/me/summary` | Current student's attendance summary | `STUDENT` (candidate; pending approval) |
+| `GET` | `/placements/drives` | `/api/v1/placements/drives` | List drives | Pending approval; student and Placement role access is unresolved |
+| `GET` | `/placements/drives/{driveId}/eligibility` | `/api/v1/placements/drives/{driveId}/eligibility` | Eligibility and reasons | Pending approval; student and Placement role access is unresolved |
+| `POST` | `/placements/drives/{driveId}/applications` | `/api/v1/placements/drives/{driveId}/applications` | Apply to a drive | `STUDENT` (candidate; pending approval) |
+| `GET` | `/announcements` | `/api/v1/announcements` | List announcements | Pending approval; authenticated role access is unresolved |
+| `POST` | `/announcements` | `/api/v1/announcements` | Create announcement | Pending approval; exact roles and scope are unresolved |
 
-The two health rows represent the unresolved alternatives, not a decision to provide both routes. The docs require server-side access enforcement and distinguish unauthenticated (`401`) from authenticated-but-forbidden (`403`) requests. Exact permissions, including what “with permission” means, still need team agreement.
+The two health rows represent the unresolved alternatives, not a decision to provide both routes. The docs require server-side access enforcement and distinguish unauthenticated (`401`) from authenticated-but-forbidden (`403`) requests. The canonical roles are `STUDENT`, `TEACHER`, `HOD`, `DIRECTOR_HR`, `TPO`, `D_TPO`, and `PLACEMENT_COORDINATOR`; the endpoint rows do not approve assignments or permissions. Exact role access and resource scope remain pending team approval.
 
 ## 8. Unresolved implementation decisions
 
 - **Health endpoint:** Choose between `/health` and `/actuator/health`, and clarify whether the selected path is under `/api/v1`.
 - **Permissions:** Confirm exact role-to-endpoint rules and any additional resource-level checks before implementation.
-- **Validation error details:** Decide whether to retain only the five-field envelope or approve an optional field-level extension.
+- **Validation error details:** Confirm whether the current generic five-field envelope is sufficient or approve an optional field-level extension before changing the response format.
 - **Additional status codes:** Decide whether and when `404` and `409` should be used, since the existing docs do not define their behavior.
 - **Database migrations:** `database/schema.sql` defines `app_user`, `app_role`, and `user_role`, including foreign-key relationships and role seed values. `docs/DATA_MODEL.md` proposes additional entities and says to agree on names and relationships; it also recommends choosing a migration approach and not mixing strategies. The team must approve the migration strategy before persistence work relies on the schema.
+- **Migration baseline and account/student persistence:** The repository contains no tracked Flyway migrations. The starter `database/schema.sql` is documented as a local manual setup, not a Flyway baseline, and its role seeds are legacy values. Before V10/V20 work, Aliza and the team must identify the deployed V1–V9 schema/history or explicitly approve a non-destructive baseline strategy for fresh and existing databases. Do not enable automatic baselining or map `ROLE_ADMIN`/`ROLE_FACULTY` without approval.
+- **Student data rules:** The Team Guide requires the mentor to provide field ranges, grade scale, and credit rules. These are not defined in the repository requirements; agree them before validating marks, results, CGPA, semester progression, or CSV rows.
+- **Reset-password request contract:** The PRD specifies a one-time expiring reset token; the Team Guide lists `POST /auth/forgot-password` and `POST /auth/reset-password`. Neither defines request/response fields, token lifetime, delivery channel, persistence, or generic response requirements. An OTP flow would be a change from the current PRD contract and requires explicit product/team approval. Establish the approved contract and persistence/delivery mechanism before exposing endpoints or a functional reset form. Do not return a success-shaped placeholder.
+- **Master-account boundaries:** HOD account operations are department-scoped and Director HR manages placement staff, but the existing schema has no department association for users and no approved department/placement-staff parent schema. Agree the parent data contract and ownership integration before implementing account writes or audit records.
+- **Offer Path integration:** See `docs/OFFER_PATH_INTEGRATION.md` for the proposed evaluator, read-only simulation, TPO count, and notification data shapes. Aliza owns evaluator/simulation/count; Pallavi owns the Offer Path UI; Ashish owns notification delivery. No endpoint, rule thresholds, unknown-value policy for "one rule away," student measure ranges, or notification delivery contract is implemented or inferred here. Confirm these contracts with their owners before adding API rows or persistence.
 
 ## Decisions requiring team approval before implementation
 
@@ -140,7 +163,7 @@ Authentication is stateless. The backend authenticates credentials against the d
 
 ### Login
 
-`POST /api/v1/auth/login` accepts JSON containing an email and password:
+`POST /api/v1/auth/login` accepts a portal, email, and password:
 
 ```http
 POST /api/v1/auth/login
@@ -149,10 +172,15 @@ Content-Type: application/json
 
 ```json
 {
+  "portal": "INSTITUTE",
   "email": "student@example.test",
   "password": "<user-provided-password>"
 }
 ```
+
+`portal` is required and is either `INSTITUTE` or `PLACEMENT`. Authentication is rejected with `403 ACCESS_DENIED` when the user's recognized role authorities do not all belong to the selected portal. Unknown and legacy role names are not implicitly mapped.
+
+The current login endpoint does not yet issue refresh tokens, implement login lockout, or require a first-login password change. It issues only the existing 900-second access token.
 
 Successful authentication returns the bearer token, a 900-second validity interval, and identity/roles:
 
@@ -181,6 +209,22 @@ Missing or invalid authentication returns `401 Unauthorized` using the common fi
 ### Logout and token lifetime
 
 There is no server-side logout endpoint or revocation mechanism. The client can log out by discarding its copy of the access token. Discarding the token does not invalidate an already issued JWT; it remains valid until its 900-second expiry. The API does not issue refresh tokens.
+
+## 10. Offer Path eligibility integration (proposed)
+
+Offer Path is not implemented in this repository. The evaluator and
+simulation/count operations belong to Aliza; the slider card and AI Coach
+wording belong to Pallavi; TPO notification delivery belongs to Ashish.
+Surendra owns authentication, student records, and agreed integration support.
+See `docs/OFFER_PATH_INTEGRATION.md` for the minimum DTO shapes, read-only
+requirements, data-owner dependencies, and unresolved semantics.
+
+The existing drive eligibility path in Section 7 remains a proposal. No
+simulation, one-rule-away count, or nudge route is approved. Do not expose one
+until the owners agree the route, permissions, request/response DTOs, missing
+data behavior, persistence baseline, and notification semantics. Every
+eligibility rule must return exactly `PASS`, `FAIL`, or `MISSING`, and the
+simulation must use the same evaluator as actual eligibility without writes.
 
 ### Frontend coordination
 

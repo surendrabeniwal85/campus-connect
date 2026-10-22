@@ -1,4 +1,4 @@
-name: Campus Connect CI
+name: Placement Assistant CI
 
 on:
   push:

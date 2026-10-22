@@ -1,0 +1,39 @@
+# Team Guide ownership map. Replace each TODO token with a verified GitHub
+# username before relying on GitHub's automatic review assignment.
+* @TODO-surendra-github-username
+
+/backend/pom.xml @TODO-surendra-github-username
+/backend/src/main/java/com/placementassistant/backend/BackendApplication.java @TODO-surendra-github-username
+/backend/src/main/java/com/placementassistant/backend/auth/ @TODO-surendra-github-username
+/backend/src/main/java/com/placementassistant/backend/common/ @TODO-surendra-github-username
+/backend/src/main/java/com/placementassistant/backend/config/ @TODO-surendra-github-username
+/backend/src/main/java/com/placementassistant/backend/platform/ @TODO-surendra-github-username
+/backend/src/main/java/com/placementassistant/backend/institute/records/ @TODO-surendra-github-username
+/backend/src/test/java/com/placementassistant/backend/ @TODO-surendra-github-username
+/backend/src/main/resources/ @TODO-surendra-github-username
+/README.md @TODO-surendra-github-username
+/PROJECT_MAP.md @TODO-surendra-github-username
+/docs/ @TODO-surendra-github-username
+/.github/ @TODO-surendra-github-username
+/database/ @TODO-aliza-github-username
+/backend/src/main/java/com/placementassistant/backend/placement/drives/ @TODO-aliza-github-username
+/backend/src/test/java/com/placementassistant/backend/placement/drives/ @TODO-aliza-github-username
+/frontend/src/features/placement/drives/ @TODO-aliza-github-username
+/backend/src/main/java/com/placementassistant/backend/institute/classroom/ @TODO-naman-github-username
+/backend/src/test/java/com/placementassistant/backend/institute/classroom/ @TODO-naman-github-username
+/frontend/src/features/institute/classroom/ @TODO-naman-github-username
+/backend/src/main/java/com/placementassistant/backend/institute/hub/ @TODO-pallavi-github-username
+/backend/src/main/java/com/placementassistant/backend/faculty/ @TODO-pallavi-github-username
+/backend/src/main/java/com/placementassistant/backend/communications/ @TODO-pallavi-github-username
+/frontend/src/app/ @TODO-pallavi-github-username
+/frontend/src/design-system/ @TODO-pallavi-github-username
+/frontend/src/layouts/ @TODO-pallavi-github-username
+/frontend/src/pages/Home.tsx @TODO-pallavi-github-username
+/frontend/src/features/institute/hub/ @TODO-pallavi-github-username
+/frontend/package.json @TODO-pallavi-github-username
+/frontend/package-lock.json @TODO-pallavi-github-username
+/backend/src/main/java/com/placementassistant/backend/platform/notification/ @TODO-ashish-github-username
+/backend/src/main/java/com/placementassistant/backend/placement/selection/ @TODO-ashish-github-username
+/backend/src/test/java/com/placementassistant/backend/placement/selection/ @TODO-ashish-github-username
+/frontend/src/widgets/NotificationBell* @TODO-ashish-github-username
+/frontend/src/features/placement/selection/ @TODO-ashish-github-username
