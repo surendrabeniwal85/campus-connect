@@ -1,0 +1,149 @@
+.hub-dashboard,
+.hub-resume,
+.hub-news,
+.hub-news-detail,
+.hub-rounds,
+.hub-ai-coach {
+  display: grid;
+  gap: var(--space-4);
+  color: var(--color-text);
+}
+
+.hub-dashboard h1,
+.hub-resume h1,
+.hub-news h2,
+.hub-news-detail h1,
+.hub-rounds h2,
+.hub-ai-coach h2 {
+  margin: 0;
+}
+
+.hub-news__heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.hub-news__heading label,
+.hub-resume__form {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.hub-news__heading select,
+.hub-resume__form input,
+.hub-resume__form textarea {
+  min-height: 2.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  padding: var(--space-3);
+}
+
+.hub-news__list,
+.hub-dashboard__tiles,
+.hub-rounds__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.hub-news__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.hub-dashboard__tile h2,
+.hub-rounds__item h3,
+.hub-ai-coach__recommendations h3 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+}
+
+.hub-dashboard__value {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.hub-rounds__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hub-rounds__item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  padding: var(--space-4);
+}
+
+.hub-rounds__progress {
+  height: 0.6rem;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-muted);
+}
+
+.hub-rounds__progress span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-placement-start), var(--color-placement-end));
+}
+
+.hub-ai-coach__missing,
+.hub-resume__error {
+  color: var(--color-warning);
+}
+
+.hub-ai-coach__recommendations {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.hub-ai-coach__recommendations li {
+  padding-left: var(--space-2);
+}
+
+.hub-resume__form label {
+  font-weight: var(--font-weight-bold);
+}
+
+.hub-resume__form textarea {
+  resize: vertical;
+}
+
+.hub-resume__analysis ul {
+  display: grid;
+  gap: var(--space-3);
+  padding-left: 1.25rem;
+}
+
+.hub-resume__analysis li p {
+  margin-bottom: 0;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 680px) {
+  .hub-news__heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .hub-news__list,
+  .hub-dashboard__tiles,
+  .hub-rounds__list {
+    grid-template-columns: 1fr;
+  }
+
+  .hub-news__pagination {
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+}
