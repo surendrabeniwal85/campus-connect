@@ -1,21 +1,27 @@
-# Backend setup
+# Placement Assistant Backend
 
-This directory contains backend setup notes. Generate the Spring Boot project here from Spring Initializr:
+This directory contains the Placement Assistant Spring Boot API.
 - Project: Maven
 - Language: Java
-- Spring Boot: selected 3.5.x patch
+- Spring Boot: 4.1.1 (`pom.xml`)
 - Java: 25
 - Group: `com.campusconnect`
-- Artifact: `campus-connect-api`
-- Package: `com.campusconnect`
-- Dependencies: Spring Web, Spring Data JPA, Validation, Spring Security, MySQL Driver, Spring Boot Test
+- Artifact: `placement-assistant-api`
+- Package: `com.placementassistant.backend`
+- Dependencies: Spring Boot Actuator, Spring Data JPA, Validation, Web MVC, Spring Security, OAuth2 Resource Server, MySQL Connector/J, and H2 for tests
 
-Then commit the generated `pom.xml`, source files, tests, Maven Wrapper and wrapper properties. Do not create a second Git repository inside this folder.
+The Maven project, wrapper, authentication API, and tests already exist. Do not
+regenerate the project or create another Git repository in this directory.
 
 Environment variables expected by local configuration:
 - `DB_URL`
 - `DB_USERNAME`
 - `DB_PASSWORD`
-- `JWT_SECRET` (only once an actual token implementation is added)
+- `JWT_SECRET`
 
-Suggested source package layout is in `../docs/ARCHITECTURE.md`.
+Use `application.yml.example` as safe configuration documentation. The local
+`application.yml` is developer configuration and must not be committed.
+
+Suggested module boundaries are in `../docs/ARCHITECTURE.md`. The database
+starter schema is not a migration baseline; check the current migration
+decision in `../docs/API_CONTRACTS.md` before adding persistence.
