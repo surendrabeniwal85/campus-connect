@@ -10,7 +10,7 @@ RUN sed -i 's/\r$//' mvnw \
 
 COPY src/main/java/ src/main/java/
 COPY src/main/resources/db/ src/main/resources/db/
-COPY src/main/resources/application.yml.example src/main/resources/application.yml
+COPY src/main/resources/application.yml src/main/resources/application.yml
 
 RUN ./mvnw -B -DskipTests package
 
