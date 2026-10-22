@@ -1,0 +1,101 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+
+  --color-canvas: #f6f7fb;
+  --color-surface: #fff;
+  --color-surface-muted: #f0f2f7;
+  --color-text: #182238;
+  --color-text-muted: #63708a;
+  --color-border: #dce1eb;
+  --color-focus: #6956d9;
+  --color-institute-start: #5143bd;
+  --color-institute-end: #8056db;
+  --color-placement-start: #087e82;
+  --color-placement-end: #16a77b;
+  --color-danger: #b42318;
+  --color-success: #18794e;
+  --color-warning: #9a6700;
+
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: clamp(1.75rem, 4vw, 3rem);
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-pill: 999px;
+  --shadow-card: 0 0.75rem 2rem rgb(24 34 56 / 8%);
+  --shadow-dialog: 0 1.5rem 4rem rgb(12 18 32 / 24%);
+  --transition-fast: 160ms ease;
+  --transition-normal: 240ms ease;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-canvas: #111827;
+  --color-surface: #1b2434;
+  --color-surface-muted: #252f42;
+  --color-text: #eef2ff;
+  --color-text-muted: #aab5ca;
+  --color-border: #3b465b;
+  --color-focus: #a99aff;
+  --color-institute-start: #8674ff;
+  --color-institute-end: #bd88ff;
+  --color-placement-start: #4bd5bd;
+  --color-placement-end: #69e3a5;
+  --color-danger: #ff8b82;
+  --color-success: #64d9a0;
+  --color-warning: #ffd166;
+  --shadow-card: 0 0.75rem 2rem rgb(0 0 0 / 24%);
+  --shadow-dialog: 0 1.5rem 4rem rgb(0 0 0 / 48%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-text);
+  font-family: Inter, system-ui, sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
