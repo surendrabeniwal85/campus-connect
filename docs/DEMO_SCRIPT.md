@@ -1,4 +1,9 @@
-# 5-Minute Demo Script
+# Historical 5-Minute Demo Script
+
+> This generic starter script predates the current authentication and feature
+> integration. Treat its dashboard, academic, attendance, placement, and
+> announcement steps as unverified until those flows are implemented and
+> tested. Use synthetic data only.
 
 1. **Problem (30 sec):** Campus workflows are scattered across different channels.
 2. **Dashboard (45 sec):** Show role-aware navigation and announcements.

@@ -1,16 +1,18 @@
-# Toolchain and Version Freeze
+# Toolchain and Version Record
 
-Before coding, choose exact patch versions and record them below. Do not upgrade dependencies mid-sprint without team approval.
+This records repository declarations and the local toolchain observed on
+21 October 2026. It does not verify the deployed database or every developer's
+machine. Coordinate version changes before upgrading dependencies mid-sprint.
 
-| Tool | Baseline | Exact version to record |
+| Tool | Repository baseline | Local observation / note |
 |---|---|---|
-| JDK | Java 25 | TODO |
-| Spring Boot | 3.5.x | TODO |
-| Maven | Maven Wrapper | TODO |
-| MySQL | 8.4 LTS | TODO |
-| Node.js | 24.x LTS | TODO |
-| React | Vite + TypeScript | TODO |
-| VS Code | Stable | TODO |
+| JDK | Java 25 (`backend/pom.xml`) | Java 25.0.1 |
+| Spring Boot | 4.1.1 (`backend/pom.xml`) | Use the repository declaration |
+| Maven | Maven Wrapper | Wrapper reports Maven 3.10.0 |
+| MySQL | 8.4 LTS target | Active server/deployed schema not verified |
+| Node.js | 24.x LTS target | Node.js 24.15.0 |
+| React / Vite | React + TypeScript + Vite | `package-lock.json` records resolved packages; package manifest uses `latest` specifiers |
+| VS Code | Stable | No exact version pinned |
 
 ## VS Code extensions
 - Extension Pack for Java

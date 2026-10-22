@@ -1,17 +1,17 @@
 -- Local development starter schema. Confirm this model with docs/DATA_MODEL.md.
 -- Use synthetic data only. Prefer migrations for shared/team environments.
 
-CREATE DATABASE IF NOT EXISTS campus_connect
+CREATE DATABASE IF NOT EXISTS placement_assistant
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_0900_ai_ci;
 
 -- Create a least-privilege local user manually and do not commit its password:
 -- CREATE USER 'campus_app'@'localhost' IDENTIFIED BY 'choose-a-local-password';
 -- GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX
--- ON campus_connect.* TO 'campus_app'@'localhost';
+-- ON placement_assistant.* TO 'campus_app'@'localhost';
 -- FLUSH PRIVILEGES;
 
-USE campus_connect;
+USE placement_assistant;
 
 CREATE TABLE IF NOT EXISTS app_user (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,

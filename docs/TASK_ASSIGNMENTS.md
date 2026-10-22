@@ -1,30 +1,63 @@
 # Team Ownership and File Boundaries
 
-Five-person team: Surendra Beniwal, Aliza Imran, Naman Relia, Ashish Sharma, Pallavi Sharma.
+The current Placement Assistant Team Guide is authoritative. All five members
+contribute frontend pages to one shared system; ownership of the system and
+shell remains with Pallavi.
 
-## Surendra — integration/backend foundation
-- Own: backend build/config, `common/**`, `config/**`, `security/**`, `identity/**`, root docs, CI and final integration.
-- Coordinate: API contract, data model, branch protection, release.
-- Avoid editing: teammates' domain folders and frontend feature pages unless agreed.
+## Surendra — access, master accounts, and student records
 
-## Aliza — academics
-- Own: backend `academic/**`, related tests, frontend `src/features/students/**`.
-- Deliver: synthetic student profile and academic summary.
+- Own authentication, authorization, account management, audit foundation,
+  student records, registration, CSV import/export, backend integration, and
+  repository/CI documentation.
+- Frontend pages: Institute login, Placement login, reset password, Account
+  Manager for HOD and Director HR, student list/profile/registration, and CSV
+  import.
+- Coordinate shared page routing, API contracts, schema, and student rules.
+- Migration ownership: V10–V29.
 
-## Naman — attendance
-- Own: backend `attendance/**`, related tests, frontend `src/features/attendance/**`.
-- Deliver: sessions, attendance summary and duplicate-record prevention.
+## Naman — classroom and training
 
-## Ashish — placements
-- Own: backend `placement/**`, related tests, frontend `src/features/placements/**`.
-- Deliver: drives, criteria, eligibility explanations and applications.
+- Own attendance, classroom, CRT, timetable, and question-bank backend and
+  frontend modules.
+- Provide owner-approved attendance/CRT query contracts for other features.
+- Migration ownership: V30–V39.
 
-## Pallavi — frontend shell and communications
-- Own: frontend app shell, layout, router, shared components/API client and package files; backend `faculty/**` and `communications/**`.
-- Deliver: responsive dashboard, announcements and faculty/CRT views.
+## Aliza — academics and placement drives
+
+- Own academics, companies, drives, eligibility rules/evaluator, applications,
+  opportunities, and placement statistics.
+- Own Offer Path simulation and per-drive one-rule-away calculations, reusing
+  the authoritative eligibility evaluator.
+- Migration ownership: V1–V9, V40–V49, and V90+.
+
+## Ashish — selection and communication
+
+- Own placement selection, rounds, notifications, feedback, and related
+  backend/frontend modules.
+- Own the notification service used by TPO nudges.
+- Migration ownership: V50–V59.
+
+## Pallavi — shared visual system, shell, and student hub
+
+- Own the shared design system, layouts, shell, Home page, news, dashboards,
+  resume/ATS, AI Coach, and student hub.
+- Own shared frontend dependencies, API client, route integration, and shared
+  components; coordinate contributions from feature owners.
+- Own news/resume migrations V60–V69.
+- Offer Path slider card and AI Coach wording remain Pallavi-owned.
+
+## Offer Path cross-module boundary
+
+See `docs/OFFER_PATH_INTEGRATION.md` for the read-only simulation, evaluator
+result semantics, one-rule-away count, and notification dependencies. Aliza
+owns eligibility decisions and simulation/count logic; Pallavi owns the
+student-facing card; Ashish owns notification delivery. Surendra contributes
+authentication, student records, authorization, and agreed integration
+support, but does not take over those modules.
 
 ## Shared rules
-- One person owns a shared file at a time.
+
+- One person owns a shared file at a time; coordinate changes with its owner.
 - Do not regenerate or overwrite another person's work.
-- If a shared-file change is needed, discuss it before editing.
-- Each module must document endpoint/request/response contracts and include tests for its core rules.
+- Each module documents endpoint/request/response contracts and tests its core
+  rules.

@@ -1,5 +1,8 @@
 # One-Day Build Plan
 
+> Historical starter schedule, not the current team execution plan. Follow the
+> current Team Guide, `PROJECT_MAP.md`, and approved task assignments.
+
 | Gate | Suggested time | Exit condition |
 |---|---|---|
 | G0 | 09:00–09:30 | PRD, versions, API and data model agreed |

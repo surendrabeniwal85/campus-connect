@@ -7,6 +7,9 @@ import ReadinessCard from './features/placement/ReadinessCard';
 import ClassroomRoutes from './features/institute/classroom/routes';
 import './features/institute/classroom/classroom.css';
 
+import ClassroomRoutes from './features/institute/classroom/routes';
+import './features/institute/classroom/classroom.css';
+
 type Page = 'Overview' | 'Academics' | 'Attendance' | 'Placements' | 'Announcements';
 
 const navigation: { label: Page; icon: string }[] = [

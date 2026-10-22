@@ -1,4 +1,9 @@
-# AI Prompt Pack — Campus Connect
+# Historical AI Prompt Pack — Campus Connect
+
+> These starter prompts are not current implementation instructions. Some
+> mention obsolete roles, planned modules, or permissions that were never
+> approved. Follow the current PRD, Team Guide, `PROJECT_MAP.md`, and
+> `.github/copilot-instructions.md` before using or adapting any prompt.
 
 Use the shared guardrail in `docs/AI_WORKING_RULES.md` first. Replace bracketed values before prompting.
 
