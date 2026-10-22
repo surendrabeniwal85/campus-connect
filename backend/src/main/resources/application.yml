@@ -7,7 +7,7 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD:change_me_locally}
   flyway:
     enabled: true
-    repair-on-migrate: true
+    clean-on-validation-error: true
   jpa:
     open-in-view: false
     hibernate:
