@@ -1,0 +1,10 @@
+.drives-page { padding: 8px 0; }
+.drives-page h2 { margin: 0 0 16px; }
+.drives-note { color: #5b6472; }
+.drives-error { color: #b42318; }
+.drives-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.drive-tile { background: #fff; border: 1px solid #dfe3ea; border-radius: 16px; padding: 18px; }
+.drive-tile h3 { margin: 4px 0 6px; font-size: 1.05rem; }
+.drive-company { margin: 0; color: #5b6472; font-size: 0.85rem; }
+.drive-money { margin: 0 0 10px; font-weight: 700; color: #0f766e; }
+.drive-facts { margin: 0; padding-left: 18px; color: #333; font-size: 0.9rem; }

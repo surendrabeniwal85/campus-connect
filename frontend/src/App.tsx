@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import ClassroomRoutes from './features/institute/classroom/routes';
+import DrivesRoutes from './features/placement/drives/routes';
 import './features/institute/classroom/classroom.css';
 
 type Page = 'Overview' | 'Academics' | 'Attendance' | 'Placements' | 'Announcements';
@@ -61,14 +62,6 @@ function Academics() {
 
 
 
-function Placements() {
-  const drives = [{ company: 'Northstar Systems', role: 'Graduate Engineer Trainee', eligibility: 'Eligible to review', date: '28 Oct 2026', status: 'Open' }, { company: 'BluePeak Technologies', role: 'Software Developer', eligibility: 'Check criteria', date: '02 Nov 2026', status: 'Open' }, { company: 'Vertex Digital', role: 'Associate Engineer', eligibility: 'Eligible to review', date: '06 Nov 2026', status: 'Upcoming' }];
-  return <><PageHeader eyebrow="CAREER SERVICES" title="Placements" description="Explore campus opportunities and keep track of application stages." />
-    <section className="welcome-panel compact-welcome"><div><p className="eyebrow light">CAREER READINESS</p><h3>Find your next opportunity.</h3><p>Review drive details and confirm eligibility against each company’s criteria.</p></div></section>
-    <section className="data-panel"><div className="panel-heading"><div><p className="eyebrow">CAMPUS RECRUITMENT</p><h3>Placement drives</h3></div><span className="tag">{drives.length} listed</span></div><div className="drive-list">{drives.map((drive) => <article className="drive-card" key={drive.company}><div className="company-mark">{drive.company.split(' ').map((word) => word[0]).slice(0, 2).join('')}</div><div className="drive-main"><h4>{drive.company}</h4><p>{drive.role}</p><small>Application date: {drive.date}</small></div><div className="drive-side"><span className={`status ${drive.status === 'Open' ? 'status-done' : 'status-current'}`}>{drive.status}</span><small>{drive.eligibility}</small></div></article>)}</div><p className="fine-print">Company names and dates are illustrative. Confirm real drive information with your placement cell.</p></section>
-  </>;
-}
-
 function Announcements() {
   const notices = [
     { category: 'PLACEMENT CELL', date: '18 Oct 2026', title: 'Placement readiness session', body: 'A preparation session covering resumes, aptitude practice and interview expectations.', tone: 'mint' },
@@ -96,7 +89,7 @@ export default function App() {
       {activePage === 'Overview' && <Overview navigate={navigate} />}
       {activePage === 'Academics' && <Academics />}
       {activePage === 'Attendance' && <ClassroomRoutes />}
-      {activePage === 'Placements' && <Placements />}
+      {activePage === 'Placements' && <DrivesRoutes />}
       {activePage === 'Announcements' && <Announcements />}
     </section>
   </main>;
