@@ -1,5 +1,8 @@
 # Phase 2 Backlog
 
+> Historical backlog snapshot. Confirm each item against the current PRD,
+> Team Guide, ownership map, and implementation status before scheduling it.
+
 - Production-grade identity integration, account lifecycle and password reset
 - Data import and validation workflow for official academic records
 - Placement portal workflows and offer lifecycle

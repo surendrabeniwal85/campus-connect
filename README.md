@@ -1,6 +1,8 @@
-# Campus Connect — Java Full-Stack Starter Kit
+# Placement Assistant — Powered by AI
 
-A starter repository for a five-person campus-management MVP. This is a **development scaffold**, not a production-ready application.
+Placement Assistant is a five-person campus-management MVP built as one React
+frontend and one Spring Boot API. It is a **development scaffold**, not a
+production-ready application.
 
 ## MVP modules
 - Authentication and role-based access foundation
@@ -12,8 +14,8 @@ A starter repository for a five-person campus-management MVP. This is a **develo
 
 ## Technology baseline
 - Java 25
-- Spring Boot 3.5.x (pin the exact patch version before the team starts)
-- Maven Wrapper (generate/commit it using the instructions below)
+- Spring Boot 4.1.1 (declared in `backend/pom.xml`)
+- Maven Wrapper
 - MySQL 8.4
 - React + TypeScript + Vite
 - Node.js 24 LTS
@@ -26,29 +28,28 @@ A starter repository for a five-person campus-management MVP. This is a **develo
 - `docs/` — requirements, architecture, API and team agreements
 - `scripts/` — local verification helpers
 
-## First setup
-1. Agree on the exact dependency versions in `docs/TOOLCHAIN.md`.
-2. Install JDK 25, Node.js 24 LTS, MySQL 8.4, Git and VS Code.
-3. Create the Spring Boot project in `backend/` using Spring Initializr with Java 25, Maven, and dependencies: Spring Web, Spring Data JPA, Validation, Spring Security, MySQL Driver, and Spring Boot Test. Copy the generated project files into `backend/`. Generate and commit Maven Wrapper (`mvn -N wrapper:wrapper`) if it is not included.
-4. From `frontend/`, run `npm install` once to generate `package-lock.json`, then use `npm ci` for repeatable installs.
-5. Create a local database and user using `database/schema.sql` as a starting point. Never commit real credentials.
-6. Copy `.env.example` to a local environment file only if your tooling loads it; otherwise set the environment variables in your terminal.
-7. Review `docs/PRD.md`, `docs/TASK_ASSIGNMENTS.md`, `docs/API.md`, and `docs/DATA_MODEL.md` before parallel implementation.
+## Setup
+1. Install JDK 25, Node.js 24 LTS, MySQL 8.4, Git and a supported Java IDE.
+2. From `frontend/`, run `npm ci` to install the locked frontend dependencies.
+3. Configure backend database credentials and `JWT_SECRET` locally; never commit local configuration or secrets.
+4. Treat `database/schema.sql` as a local starter schema only. It is not evidence of a deployed database or a migration baseline.
+5. Read `files/Placement_Assistant_PRD.docx` and `files/Placement_Assistant_Team_Guide.docx` before implementing a feature. Supporting architecture, API, security, data, testing and ownership notes are in `docs/`.
 
-## Run commands (after scaffolding the app)
+## Run commands
 Backend (PowerShell):
 ```powershell
-cd backend
+Set-Location backend
 .\mvnw.cmd test
 .\mvnw.cmd spring-boot:run
 ```
 Frontend:
 ```powershell
-cd frontend
+Set-Location frontend
 npm ci
+npm run lint
+npm run build
 npm run dev
 ```
-The frontend starter is intentionally minimal. Run `npm install` first to create the lockfile if one is not present.
 
 ## Git workflow
 - `main`: release/demo-ready
@@ -58,6 +59,8 @@ The frontend starter is intentionally minimal. Run `npm install` first to create
 - Never commit secrets, `.env`, build output, IDE caches or generated dependencies.
 
 ## Important limitations
-- This kit does not include a completed authentication system, finished business APIs, migrations, or production deployment.
+- The backend currently provides database-backed login and JWT validation. Account creation/claim, password reset, refresh tokens, lockout and role-specific authenticated pages are not connected.
+- The public portal-selection view is a temporary authentication entry integration. The full public Home page, About and Contact sections remain Pallavi-owned.
+- Tracked database SQL is a local starter, not a confirmed deployed schema. No Flyway migration history is present in the repository.
 - Do not use real student personal data in demos. Use synthetic data.
 - Do not represent attendance GPS/photo verification or placement eligibility as production-validated.

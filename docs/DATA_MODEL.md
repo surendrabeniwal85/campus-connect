@@ -1,5 +1,9 @@
 # Initial Data Model Proposal
 
+> Historical starter proposal. The role values below are legacy seed examples,
+> not the current canonical role list and not approved mappings. Use the
+> current PRD and `docs/API_CONTRACTS.md` before designing schema changes.
+
 Agree on names and relationships before writing repositories. Keep this model small for the demo.
 
 ## Entities
