@@ -24,7 +24,8 @@ class AuthRepositoryTests {
 
 	@Test
 	void persistsUserRoleAssociationAndCreationTimestamp() {
-		Role studentRole = roleRepository.saveAndFlush(new Role("ROLE_STUDENT"));
+		Role studentRole = roleRepository.findByName("ROLE_STUDENT")
+				.orElseGet(() -> roleRepository.saveAndFlush(new Role("ROLE_STUDENT")));
 		User user = new User("Test Student", "student@example.test", "test-password-hash");
 		user.setEnabled(false);
 		user.addRole(studentRole);
@@ -58,8 +59,6 @@ class AuthRepositoryTests {
 
 	@Test
 	void looksUpRoleByExactName() {
-		roleRepository.saveAndFlush(new Role("ROLE_TPO"));
-
 		Optional<Role> foundRole = roleRepository.findByName("ROLE_TPO");
 
 		assertThat(foundRole).isPresent();
