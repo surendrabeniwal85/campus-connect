@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: campus-connect-api
+  datasource:
+    url: jdbc:mysql://localhost:3306/placement_assistant
+    username: root
+    password: your_mysql_password
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
